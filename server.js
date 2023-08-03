@@ -13,7 +13,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//Router
+//Router Auth
 app.post(`/auth/signup`, async (req, res) => {
   const { username, email, password } = req.body;
   try {
@@ -42,7 +42,6 @@ app.post(`/auth/signup`, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 app.post(`/auth/signin`, async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -72,6 +71,81 @@ app.post(`/auth/signin`, async (req, res) => {
       // Sai mật khẩu, trả về thông báo lỗi
       res.status(401).json({ message: "Sai mật khẩu" });
     }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//Router Products
+app.get(`/products`, async (req,res)=>{
+  try {
+    const data  = await fs.promises.readFile(dbFile,'utf-8');
+    const db = JSON.parse(data);
+    res.status(200).json(db.products)
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+//Lấy sản phẩm theo id
+app.get(`/products/:id`, async (req,res)=>{
+  try {
+    const data  = await fs.promises.readFile(dbFile,'utf-8');
+    const db = JSON.parse(data);
+    const idProduct = parseInt(req.params.id)
+    const product = db.products.find((item)=> item.id ===idProduct)
+    if(!product){
+      return res.status(404).json({message: "Sản phẩm không tồn tại"})
+    }
+    res.status(200).json(db.products)
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+// Thêm sản phẩm mới
+app.post("/products", async (req, res) => {
+  const newProduct = req.body;
+  try {
+    const data = await fs.promises.readFile(dbFile, "utf-8");
+    const db = JSON.parse(data);
+    newProduct.id = db.products.length + 1;
+    db.products.push(newProduct);
+    await fs.promises.writeFile(dbFile, JSON.stringify(db), "utf8");
+    res.status(201).json({ message: "Thêm sản phẩm thành công", product: newProduct });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+// Sửa thông tin sản phẩm
+app.patch("/products/:id/edit", async (req, res) => {
+  const productId = parseInt(req.params.id);
+  const updatedProduct = req.body;
+  try {
+    const data = await fs.promises.readFile(dbFile, "utf-8");
+    const db = JSON.parse(data);
+    const productIndex = db.products.findIndex((item) => item.id === productId);
+    if (productIndex === -1) {
+      return res.status(404).json({ message: "Sản phẩm không tồn tại" });
+    }
+    db.products[productIndex] = { ...db.products[productIndex], ...updatedProduct };
+    await fs.promises.writeFile(dbFile, JSON.stringify(db), "utf8");
+    res.status(200).json({ message: "Sửa thông tin sản phẩm thành công", product: db.products[productIndex] });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+// Xóa sản phẩm
+app.delete("/products/:id", async (req, res) => {
+  const productId = parseInt(req.params.id);
+  try {
+    const data = await fs.promises.readFile(dbFile, "utf-8");
+    const db = JSON.parse(data);
+    const productIndex = db.products.findIndex((item) => item.id === productId);
+    if (productIndex === -1) {
+      return res.status(404).json({ message: "Sản phẩm không tồn tại" });
+    }
+    db.products.splice(productIndex, 1);
+    await fs.promises.writeFile(dbFile, JSON.stringify(db), "utf8");
+    res.status(200).json({ message: "Xóa sản phẩm thành công" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -1,12 +1,20 @@
 {
   "products": [
     {
-      "id": 1,
-      "name": "Used 2019 Audi S4 Premium Plus",
-      "price": "$41.200",
-      "miles": 1345,
-      "desc": "AWD 4-Cylinder Turbo",
-      "images": "images/product-1.webp"
+      "name": "product 1",
+      "price": "100000000",
+      "miles": "52525",
+      "images": "làlsjafljakljfaaa",
+      "desc": "fafafafaf",
+      "id": 1
+    },
+    {
+      "name": "tuyen",
+      "price": "afsaaf",
+      "miles": "10000000",
+      "images": "asfasfasf",
+      "desc": "afafafaf",
+      "id": 2
     }
   ],
   "users": [

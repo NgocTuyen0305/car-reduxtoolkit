@@ -1,16 +1,61 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { addProduct, fetchProduct } from "../../actions/products";
-const productAdminSlice = createSlice({
-  name: "productsAdmin",
-  initialState: { products: {}, error: "", isLoading: false },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchProduct.fulfilled, (state, action) => {
-      state.products = action.payload;
-    });
-    builder.addCase(addProduct.fulfilled, (state, action) => {
-      state.products.push(action.payload);
-    });
-  },
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// import { pause } from "../../utils/pause";
+import { IProduct } from "../../interfaces/products";
+const productApi = createApi({
+  reducerPath: "product",
+  tagTypes: ["Product"],
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3000/",
+  //   prepareHeaders: (Headers) => {
+  //     const token = localStorage.getItem("accset_Token");
+  //     Headers.set("authorization", `Bearer ${token}`);
+  //     return Headers;
+  //   },
+  //   fetchFn: async (...args) => {
+  //     await pause(1000);
+  //     return fetch(...args);
+  // }
+  }),
+  endpoints: (builder) => ({
+    getProducts: builder.query<IProduct[], void>({
+      query: () => `products`,
+      providesTags: ["Product"],
+    }),
+    getProductById: builder.query<IProduct, number | string>({
+      query: (id) => `products/${id}`,
+      providesTags: ["Product"],
+    }),
+    addProduct: builder.mutation({
+      query: (product: IProduct) => ({
+        url: "products",
+        method: "POST",
+        body: product,
+      }),
+      invalidatesTags: ["Product"],
+    }),
+    updateProduct: builder.mutation<IProduct, IProduct>({
+      query: (product) => ({
+        url: `products/${product.id}`,
+        method: "PATCH",
+        body: product,
+      }),
+      invalidatesTags: ["Product"],
+    }),
+    removeProduct: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `products/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Product"],
+    }),
+  }),
 });
-export const productAdminReducer = productAdminSlice.reducer;
+export const {
+  useGetProductsQuery,
+  useAddProductMutation,
+  useGetProductByIdQuery,
+  useRemoveProductMutation,
+  useUpdateProductMutation
+} = productApi;
+export const productReducer = productApi.reducer;
+export default productApi

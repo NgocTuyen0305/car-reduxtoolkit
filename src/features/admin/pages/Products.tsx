@@ -1,93 +1,125 @@
 import React, { useState } from "react";
-import { Space, Table } from "antd";
+import { Popconfirm, Result, Skeleton, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { IProduct } from "../../../interfaces/products";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { Button, Modal } from "antd";
 import AddProducts from "./AddProduct";
-interface DataType {
-  key: string;
-  name: string;
-  images: string;
-  price: string;
-  miles: number;
-  desc: string;
-}
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Images",
-    dataIndex: "images",
-    key: "images",
-  },
-  {
-    title: "Price",
-    dataIndex: "price",
-    key: "price",
-  },
-  {
-    title: "Miles",
-    dataIndex: "miles",
-    key: "miles",
-  },
-  {
-    title: "Desc",
-    dataIndex: "desc",
-    key: "desc",
-  },
+import { useGetProductsQuery, useRemoveProductMutation } from "../productSlice";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import EditProducts from "./EditProducts";
+import { Link } from "react-router-dom";
 
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-
-const data: IProduct[] = [];
 const Products = () => {
-  // const dispatch = useAppDispatch();
-  const { products } = useAppSelector((state: any) => state.productsAdmin);
-  console.log(products);
-//addPRODUCT
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data, error, isLoading } = useGetProductsQuery();
+  const [removeProduct, { isLoading: isRemoveLoading }] =
+    useRemoveProductMutation();
+  // console.log(error);
 
-const showModal = () => {
-  setIsModalOpen(true);
-};
+  if (isLoading) return <Skeleton />;
+  if (error)
+    return (
+      <Result
+        status="404"
+        title="404"
+        subTitle="Sorry, the page you visited does not exist."
+        extra={<Button type="primary">Back Home</Button>}
+      />
+    );
 
-const handleOk = () => {
-  setIsModalOpen(false);
-};
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Images",
+      dataIndex: "images",
+      key: "images",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Miles",
+      dataIndex: "miles",
+      key: "miles",
+    },
+    {
+      title: "Desc",
+      dataIndex: "desc",
+      key: "desc",
+    },
 
-const handleCancel = () => {
-  setIsModalOpen(false);
-};
+    {
+      title: "Action",
+      key: "action",
+      render: ({ key: id }: any) => (
+        <Space size="middle">
+          <Popconfirm
+            placement="topLeft"
+            title={"Bạn có muốn xóa?"}
+            onConfirm={() => removeProduct(id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger>
+              {isRemoveLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </Popconfirm>
+          <Button type="link" className="ml-2">
+            <Link to={`/admin/product/${id}/edit`}>Edit</Link>
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+  const dataSoucre = data?.map(({ id, name, miles, desc, images, price }) => {
+    return {
+      key: id,
+      name,
+      miles,
+      desc,
+      images,
+      price,
+    };
+  });
+  // console.log(dataSoucre);
+  //addPRODUCT
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
-      <Table columns={columns} dataSource={data} />
-      <Button type="primary" onClick={showModal} className="bg-violet-500 mt-6">
-        ADD NEW
-      </Button>
-      <Modal
-        title="Add New Product"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <AddProducts/>
-      </Modal>
+      <div className="h-screen">
+        <Table columns={columns} dataSource={dataSoucre} />
+        <Button
+          type="primary"
+          onClick={showModal}
+          className="bg-violet-500 mt-6"
+        >
+          ADD NEW
+        </Button>
+        <Modal
+          title="Add New Product"
+          open={isModalOpen}
+          onCancel={handleCancel}
+        >
+          <AddProducts />
+        </Modal>
+      </div>
     </>
   );
 };
