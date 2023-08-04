@@ -1,10 +1,10 @@
-   
-import { SignUp } from "../../../actions/auth";
-import { useAppDispatch } from "../../../app/hooks";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-
+import { useSignupMutation } from "../authSlice";
+import { Spin } from "antd";
+import { notification } from "antd";
+import { Link } from "react-router-dom";
 const Signup = () => {
   const singupSchema = yup.object().shape({
     username: yup.string().required("Vui lòng nhập tên đăng nhập."),
@@ -31,15 +31,31 @@ const Signup = () => {
   } = useForm({
     resolver: yupResolver(singupSchema),
   });
-
-  const dispatch = useAppDispatch();
+  const [singup, { isLoading, error }] = useSignupMutation();
+  if (isLoading) return <Spin />;
+  const successSignup = () => {
+    notification.success({
+      message: "Đăng kí thành công",
+      description: "Bạn đã đăng kí thành công tài khoản.",
+    });
+  };
+  if (error) {
+    notification.error({
+      message: "Đăng kí thất bại",
+      description: "Email hoặc username đã tồn tại"
+    });
+  }
   const onSubmit = async (data: any) => {
-    await dispatch(SignUp(data));
-    document.getElementById("registerForm")?.reset();
+    await singup(data)
+      .unwrap()
+      .then(() => {
+        successSignup();
+        document.getElementById("registerForm")?.reset();
+      });
   };
   return (
     <>
-     <div className="max-w-lg mx-auto my-12 flex flex-col gap-y-8 ">
+      <div className="max-w-lg mx-auto my-12 flex flex-col gap-y-8 ">
         <div className="">
           <h1 className="font-bold text-2xl">Sign In</h1>
         </div>
@@ -108,9 +124,9 @@ const Signup = () => {
             </button>
             <div className="">
               <span>Already have an account?</span>
-              <a href="/signin">
+              <Link to={`/signin`}>
                 <span className="text-violet-500 font-medium">Sign in</span>
-              </a>
+              </Link>
             </div>
           </div>
         </form>

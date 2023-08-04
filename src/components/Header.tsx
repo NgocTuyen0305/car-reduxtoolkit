@@ -1,17 +1,17 @@
 import React from "react";
 import { useAppSelector } from "../app/hooks";
-
+import { Link } from "react-router-dom";
 const Header = () => {
-  const { user } = useAppSelector((state) => state.auth.users);
+  // const { user } = useAppSelector((state) => state.auth.users);
   // const name = users.user.username;
   // console.log(user);
   return (
     <>
       <div className="flex justify-between bg-violet-200 items-center py-4 px-6">
         <div className="">
-          <a href="/">
+          <Link to={`/`}>
             <i className="fas fa-car text-2xl text-violet-500"></i>
-          </a>
+          </Link>
         </div>
         <div className="">
           <ul className="flex justify-evenly">
@@ -30,7 +30,7 @@ const Header = () => {
           </ul>
         </div>
         <div className="">
-          {user ? (
+          {/* {user ? (
             <div className="">
               <span className="font-bold">Hello: </span>
               <span className="font-bold text-violet-500">{user.username}</span>
@@ -41,7 +41,10 @@ const Header = () => {
                 Sign Up
               </button>
             </a>
-          )}
+          )} */}
+         <Link to={`signup`}><button className="btn bg-violet-500 rounded-md p-1 text-white">
+              Sign Up
+            </button></Link>
         </div>
       </div>
     </>

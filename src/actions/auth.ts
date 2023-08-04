@@ -7,12 +7,7 @@ const openSuccessNotification = () => {
     description: "Bạn đã đăng ký thành công tài khoản.",
   });
 };
-const successSignin = () => {
-  notification.success({
-    message: "Đăng nhập thành công",
-    description: "Bạn đã đăng nhập thành công tài khoản.",
-  });
-};
+
 const openErrorNotification = () => {
   notification.error({
     message: "Đăng ký Thất bại",

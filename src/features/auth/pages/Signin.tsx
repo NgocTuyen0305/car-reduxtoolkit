@@ -1,29 +1,51 @@
 import { useForm } from "react-hook-form";
-import * as yup from 'yup';
+import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { SignIn } from "../../../actions/auth";
-
+import { Link } from "react-router-dom";
+import { useSigninMutation } from "../authSlice";
+import { Spin, notification } from "antd";
 const Signin = () => {
   const signSchema = yup.object().shape({
-    email: yup.string().required("Vui lòng nhập email").email('Email không hợp lệ'),
-    password: yup.string().required("Vui lòng nhập password").min(6,"Password phải ít nhất 6 kí tự")
-  })
+    email: yup
+      .string()
+      .required("Vui lòng nhập email")
+      .email("Email không hợp lệ"),
+    password: yup
+      .string()
+      .required("Vui lòng nhập password")
+      .min(6, "Password phải ít nhất 6 kí tự"),
+  });
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(signSchema)
+    resolver: yupResolver(signSchema),
   });
-  const dispatch = useAppDispatch()
+  const [signin,{isLoading,error}] = useSigninMutation()
+  if (isLoading) return <Spin className="text-center" />;
+  const successSignin = () => {
+    notification.success({
+      message: "Đăng nhập thành công",
+      description: "Bạn đã đăng nhập thành công tài khoản.",
+    });
+  };
+  const errorSignin = () => {
+    notification.error({
+      message: "Đăng nhập thất bại",
+      description: "Vui lòng đăng nhập lại.",
+    });
+  };
+  if(error) errorSignin();
   
-  
-  const onHandleSubmit = async (data:any)=>{
-    // console.log(data);
-    await dispatch(SignIn(data));
-    document.getElementById("registerForm")?.reset();
-  }
+  const onHandleSubmit = async (data: any) => {
+    await signin(data)
+    .unwrap()
+    .then(() => {
+      successSignin();
+      document.getElementById("registerForm")?.reset();
+    });
+  };
 
   return (
     <>
@@ -70,9 +92,9 @@ const Signin = () => {
             </button>
             <div className="">
               <span>Don't have account?</span>
-              <a href="/signup">
+              <Link to={`/signup`}>
                 <span className="text-violet-500 font-medium">Sign up</span>
-              </a>
+              </Link>
             </div>
           </div>
         </form>
