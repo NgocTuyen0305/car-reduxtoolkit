@@ -8,6 +8,7 @@ import Signin from "./features/auth/pages/Signin";
 import Signup from "./features/auth/pages/Signup";
 import AdminLayout from "./features/admin/pages/AdminLayout";
 import Products from "./features/admin/pages/Products";
+import EditProducts from "./features/admin/pages/EditProducts";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
       {
         path: "product",
         element: <Products/>,
+      },
+      {
+        path: "product/:id/edit",
+        element: <EditProducts/>,
       },
       {
         path: "product/:idProduct",

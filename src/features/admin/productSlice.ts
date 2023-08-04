@@ -21,7 +21,7 @@ const productApi = createApi({
       query: () => `products`,
       providesTags: ["Product"],
     }),
-    getProductById: builder.query<IProduct, number | string>({
+    getProductById: builder.query<IProduct, number>({
       query: (id) => `products/${id}`,
       providesTags: ["Product"],
     }),
