@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import {
+  DashboardOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
+  DatabaseOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 
@@ -18,7 +18,7 @@ const AdminLayout = () => {
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout className='h-screen'>
     <Sider trigger={null} collapsible collapsed={collapsed}>
       <div className="demo-logo-vertical" />
       <Menu
@@ -28,13 +28,13 @@ const AdminLayout = () => {
         items={[
           {
             key: '1',
-            icon: <UserOutlined />,
-            label: 'nav 1',
+            icon: <DashboardOutlined />,
+            label: <Link to={`/admin/dashboard`}>Dashboard</Link>,
           },
           {
             key: '2',
-            icon: <VideoCameraOutlined />,
-            label: 'nav 2',
+            icon: <DatabaseOutlined />,
+            label: <Link to={`/admin/product`}>Products Management</Link>,
           },
           {
             key: '3',

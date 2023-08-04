@@ -9,6 +9,7 @@ import Signup from "./features/auth/pages/Signup";
 import AdminLayout from "./features/admin/pages/AdminLayout";
 import Products from "./features/admin/pages/Products";
 import EditProducts from "./features/admin/pages/EditProducts";
+import Dashboard from "./features/admin/pages/Dashboard";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "product/:id/edit",
         element: <EditProducts/>,
+      },
+      {
+        path: "/admin/dashboard",
+        element: <Dashboard/>,
       },
       {
         path: "product/:idProduct",

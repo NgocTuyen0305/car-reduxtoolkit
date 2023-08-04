@@ -103,9 +103,13 @@ const Products = () => {
 
   return (
     <>
-      <div className="h-screen">
-        <Table columns={columns} dataSource={dataSoucre} />
-        <Button
+      <div className="">
+        <div className="flex justify-between items-center my-6">
+          <div className="">
+          <span className="text-2xl font-bold">Product Management</span>
+          </div>
+          <div className="">
+          <Button
           type="primary"
           onClick={showModal}
           className="bg-violet-500 mt-6"
@@ -119,6 +123,10 @@ const Products = () => {
         >
           <AddProducts />
         </Modal>
+          </div>
+        </div>
+        <Table columns={columns} dataSource={dataSoucre} />
+        
       </div>
     </>
   );
