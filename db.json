@@ -1,1 +1,17 @@
-{"products":[],"users":[{"id":1,"username":"tuyen","email":"tuyen123@gmail.com","password":"$2b$10$rCwHb9hxzEawrBA/CbgaHuunhRDh4dTyDEWed8mrvD1nNPthcZy/y"},{"id":2,"username":"tuyen123","email":"abc123456@gmail.com","password":"$2b$10$FHiDY/82aZL9kTXr85nPHea8wdyNB9nyAexo5x.PdXQcag72PYvhm"}]}
+{
+  "products": [],
+  "users": [
+    {
+      "id": 1,
+      "username": "tuyen",
+      "email": "tuyen123@gmail.com",
+      "password": "$2b$10$rCwHb9hxzEawrBA/CbgaHuunhRDh4dTyDEWed8mrvD1nNPthcZy/y"
+    },
+    {
+      "id": 2,
+      "username": "tuyen123",
+      "email": "abc123456@gmail.com",
+      "password": "$2b$10$FHiDY/82aZL9kTXr85nPHea8wdyNB9nyAexo5x.PdXQcag72PYvhm"
+    }
+  ]
+}

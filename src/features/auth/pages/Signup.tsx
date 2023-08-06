@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useSignupMutation } from "../authSlice";
+import { useSignupMutation } from "../authApi";
 import { Spin } from "antd";
 import { notification } from "antd";
 import { Link } from "react-router-dom";
@@ -32,7 +32,13 @@ const Signup = () => {
     resolver: yupResolver(singupSchema),
   });
   const [singup, { isLoading, error }] = useSignupMutation();
-  if (isLoading) return <Spin />;
+  if (isLoading)
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <span className="text-xl">Đợi tao chút...</span>
+        <Spin />
+      </div>
+    );
   const successSignup = () => {
     notification.success({
       message: "Đăng kí thành công",
@@ -42,7 +48,7 @@ const Signup = () => {
   if (error) {
     notification.error({
       message: "Đăng kí thất bại",
-      description: "Email hoặc username đã tồn tại"
+      description: "Email hoặc username đã tồn tại",
     });
   }
   const onSubmit = async (data: any) => {

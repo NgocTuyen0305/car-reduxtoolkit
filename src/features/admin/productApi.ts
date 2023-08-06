@@ -6,15 +6,6 @@ const productApi = createApi({
   tagTypes: ["Product"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/",
-  //   prepareHeaders: (Headers) => {
-  //     const token = localStorage.getItem("accset_Token");
-  //     Headers.set("authorization", `Bearer ${token}`);
-  //     return Headers;
-  //   },
-  //   fetchFn: async (...args) => {
-  //     await pause(1000);
-  //     return fetch(...args);
-  // }
   }),
   endpoints: (builder) => ({
     getProducts: builder.query<IProduct[], void>({

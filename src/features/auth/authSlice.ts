@@ -1,39 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { pause } from "../../utils/pause";
-const authApi = createApi({
-  reducerPath: 'auth',
-  tagTypes: ['Auth'],
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000',
-      prepareHeaders: (Headers) => {
-      const token = localStorage.getItem("accset_Token");
-      Headers.set("authorization", `Bearer ${token}`);
-      return Headers;
+import { createSlice } from "@reduxjs/toolkit";
+const authSlice = createSlice({
+  name: 'Authentication',
+  initialState: {token: null,user: null},
+  reducers:{
+    setToken: (state,action)=>{
+      state.token = action.payload
     },
-    fetchFn: async (...args) => {
-      await pause(2000);
-      return fetch(...args);
+    setUser: (state,action)=>{
+      state.user = action.payload
+    },
   }
-  }),
-  endpoints: (builder)=>({
-    signin: builder.mutation({
-      query: (signinUser) => ({
-        url: "auth/signin",
-        method: "POST",
-        body: signinUser,
-      }),
-      invalidatesTags: ["Auth"],
-    }),
-    signup: builder.mutation({
-      query: (signupUser) => ({
-        url: "auth/signup",
-        method: "POST",
-        body: signupUser,
-      }),
-      invalidatesTags: ["Auth"],
-    }),
-  })
 })
-export const authReducer = authApi.reducer;
-export const {useSigninMutation,useSignupMutation} = authApi;
-export default authApi
+export const {setToken,setUser} = authSlice.actions
+export const authSliceReducer = authSlice.reducer

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Button, Form, Input } from "antd";
 import { IProduct } from "../../../interfaces/products";
-import { useParams,useNavigate } from "react-router-dom";
-import { useAddProductMutation, useGetProductByIdQuery } from "../productSlice";
+import { useParams, useNavigate } from "react-router-dom";
+import { useAddProductMutation, useGetProductByIdQuery } from "../productApi";
 
 const EditProducts = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
   // console.log(id);
   const { data: productData, isLoading } = useGetProductByIdQuery(id);
@@ -26,11 +26,11 @@ const EditProducts = () => {
   }, [newData]);
   const onFinish = (values: any) => {
     updateProduct(values)
-    // console.log(values);
-    .unwrap()
-    .then(() => {
-      return navigate(`/admin/product`);
-    });
+      // console.log(values);
+      .unwrap()
+      .then(() => {
+        return navigate(`/admin/product`);
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {

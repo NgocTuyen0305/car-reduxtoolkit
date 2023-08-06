@@ -2,9 +2,12 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
-import { useSigninMutation } from "../authSlice";
+import { useSigninMutation } from "../authApi";
 import { Spin, notification } from "antd";
+import { useAppDispatch } from "../../../app/hooks";
+import { setToken } from "../authSlice";
 const Signin = () => {
+  const dispatch = useAppDispatch();
   const signSchema = yup.object().shape({
     email: yup
       .string()
@@ -22,8 +25,15 @@ const Signin = () => {
   } = useForm({
     resolver: yupResolver(signSchema),
   });
-  const [signin,{isLoading,error}] = useSigninMutation()
-  if (isLoading) return <Spin className="text-center" />;
+  const [signin, { isLoading, error, data }] = useSigninMutation();
+
+  if (isLoading)
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <span className="text-xl">Đợi tao chút...</span>
+        <Spin />
+      </div>
+    );
   const successSignin = () => {
     notification.success({
       message: "Đăng nhập thành công",
@@ -36,15 +46,13 @@ const Signin = () => {
       description: "Vui lòng đăng nhập lại.",
     });
   };
-  if(error) errorSignin();
-  
+  if (error) errorSignin();
+
   const onHandleSubmit = async (data: any) => {
-    await signin(data)
-    .unwrap()
-    .then(() => {
-      successSignin();
-      document.getElementById("registerForm")?.reset();
-    });
+    const reponse = await signin(data).unwrap();
+    dispatch(setToken(reponse.accsetToken));
+    successSignin();
+    document.getElementById("registerForm")?.reset();
   };
 
   return (

@@ -3,7 +3,7 @@ import { Popconfirm, Result, Skeleton, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Button, Modal } from "antd";
 import AddProducts from "./AddProduct";
-import { useGetProductsQuery, useRemoveProductMutation } from "../productSlice";
+import { useGetProductsQuery, useRemoveProductMutation } from "../productApi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import EditProducts from "./EditProducts";
 import { Link } from "react-router-dom";
@@ -106,27 +106,26 @@ const Products = () => {
       <div className="">
         <div className="flex justify-between items-center my-6">
           <div className="">
-          <span className="text-2xl font-bold">Product Management</span>
+            <span className="text-2xl font-bold">Product Management</span>
           </div>
           <div className="">
-          <Button
-          type="primary"
-          onClick={showModal}
-          className="bg-violet-500 mt-6"
-        >
-          ADD NEW
-        </Button>
-        <Modal
-          title="Add New Product"
-          open={isModalOpen}
-          onCancel={handleCancel}
-        >
-          <AddProducts />
-        </Modal>
+            <Button
+              type="primary"
+              onClick={showModal}
+              className="bg-violet-500 mt-6"
+            >
+              ADD NEW
+            </Button>
+            <Modal
+              title="Add New Product"
+              open={isModalOpen}
+              onCancel={handleCancel}
+            >
+              <AddProducts />
+            </Modal>
           </div>
         </div>
         <Table columns={columns} dataSource={dataSoucre} />
-        
       </div>
     </>
   );

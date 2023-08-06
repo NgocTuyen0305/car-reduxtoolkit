@@ -1,14 +1,14 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
 import { IProduct } from "../../../interfaces/products";
-import { useAddProductMutation } from "../productSlice";
+import { useAddProductMutation } from "../productApi";
 const AddProducts = () => {
   const [addProduct, { isLoading }] = useAddProductMutation();
 
   const onFinish = (values: any) => {
     addProduct(values)
-    // console.log(values);
-    
+      // console.log(values);
+
       .unwrap()
       .then(() => {
         return document.querySelector("#form-add")?.reset();
@@ -51,7 +51,7 @@ const AddProducts = () => {
         name="miles"
         rules={[{ required: true, message: "Vui lòng nhập trường miles!" }]}
       >
-        <Input/>
+        <Input />
       </Form.Item>
       <Form.Item<IProduct>
         label="Images"
