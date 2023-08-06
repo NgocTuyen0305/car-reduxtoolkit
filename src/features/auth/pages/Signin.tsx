@@ -1,23 +1,15 @@
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
+
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useSigninMutation } from "../authApi";
 import { Spin, notification } from "antd";
 import { useAppDispatch } from "../../../app/hooks";
-import { setToken } from "../authSlice";
+import { setToken, setUser } from "../authSlice";
+import { signSchema } from "../../../schemas/authSchema";
 const Signin = () => {
   const dispatch = useAppDispatch();
-  const signSchema = yup.object().shape({
-    email: yup
-      .string()
-      .required("Vui lòng nhập email")
-      .email("Email không hợp lệ"),
-    password: yup
-      .string()
-      .required("Vui lòng nhập password")
-      .min(6, "Password phải ít nhất 6 kí tự"),
-  });
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -50,9 +42,13 @@ const Signin = () => {
 
   const onHandleSubmit = async (data: any) => {
     const reponse = await signin(data).unwrap();
-    dispatch(setToken(reponse.accsetToken));
     successSignin();
-    document.getElementById("registerForm")?.reset();
+    document.getElementById("registerForm")?.reset()
+    if(reponse.accsetToken){
+      dispatch(setToken(reponse.accsetToken));
+      dispatch(setUser(reponse.user));
+      // navigate(`/admin`)
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet,Navigate } from "react-router-dom";
+import { createBrowserRouter, Outlet, Navigate } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import ProductList from "./pages/ProductList";
 import ProductDetail from "./pages/ProductDetail";
@@ -10,6 +10,8 @@ import AdminLayout from "./features/admin/pages/AdminLayout";
 import Products from "./features/admin/pages/Products";
 import EditProducts from "./features/admin/pages/EditProducts";
 import Dashboard from "./features/admin/pages/Dashboard";
+
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -21,19 +23,19 @@ export const router = createBrowserRouter([
       </div>
     ),
     children: [
-      { index: true, element: <Homepage/> },
+      { index: true, element: <Homepage /> },
       { path: "products", element: <ProductList /> },
       { path: "products/:id", element: <ProductDetail /> },
-      { path: "signin", element: <Signin/> },
-      { path: "signup", element: <Signup/>   },
+      { path: "signin", element: <Signin /> },
+      { path: "signup", element: <Signup /> },
     ],
   },
   {
     path: "/admin",
     element: (
-      <div className="">
-        <AdminLayout/>
-      </div>
+        <div className="">
+          <AdminLayout />
+        </div>
     ),
     children: [
       {
@@ -42,15 +44,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "product",
-        element: <Products/>,
+        element: <Products />,
       },
       {
         path: "product/:id/edit",
-        element: <EditProducts/>,
+        element: <EditProducts />,
       },
       {
         path: "/admin/dashboard",
-        element: <Dashboard/>,
+        element: <Dashboard />,
       },
       {
         path: "product/:idProduct",

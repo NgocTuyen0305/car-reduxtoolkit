@@ -11,5 +11,6 @@ const authSlice = createSlice({
     },
   }
 })
+
 export const {setToken,setUser} = authSlice.actions
 export const authSliceReducer = authSlice.reducer

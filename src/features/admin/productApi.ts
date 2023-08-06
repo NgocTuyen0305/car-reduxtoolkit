@@ -8,7 +8,7 @@ const productApi = createApi({
     baseUrl: "http://localhost:3000/",
   }),
   endpoints: (builder) => ({
-    getProducts: builder.query<IProduct[], void>({
+    getProducts: builder.query<IProduct, void>({
       query: () => `products`,
       providesTags: ["Product"],
     }),

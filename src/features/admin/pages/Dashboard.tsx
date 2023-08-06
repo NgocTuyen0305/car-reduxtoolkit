@@ -1,6 +1,6 @@
-import React from "react";
-import { red, green } from "@ant-design/colors";
+
 import { Progress, Space } from "antd";
+
 const Dashboard = () => {
   return (
     <>

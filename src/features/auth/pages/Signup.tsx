@@ -1,29 +1,12 @@
-import * as yup from "yup";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useSignupMutation } from "../authApi";
 import { Spin } from "antd";
 import { notification } from "antd";
 import { Link } from "react-router-dom";
+import { singupSchema } from "../../../schemas/authSchema";
 const Signup = () => {
-  const singupSchema = yup.object().shape({
-    username: yup.string().required("Vui lòng nhập tên đăng nhập."),
-    email: yup
-      .string()
-      .required("Vui lòng nhập email.")
-      .email("Email không hợp lệ."),
-    password: yup
-      .string()
-      .required("Vui lòng nhập mật khẩu.")
-      .min(6, "Mật khẩu phải chứa ít nhất 6 ký tự."),
-    confirmPassword: yup
-      .string()
-      .required("Vui lòng xác nhận mật khẩu.")
-      .oneOf(
-        [yup.ref("password")],
-        "Mật khẩu xác nhận phải giống với mật khẩu đã nhập."
-      ),
-  });
   const {
     register,
     handleSubmit,

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Popconfirm, Result, Skeleton, Space, Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
+
 import { Button, Modal } from "antd";
 import AddProducts from "./AddProduct";
 import { useGetProductsQuery, useRemoveProductMutation } from "../productApi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import EditProducts from "./EditProducts";
 import { Link } from "react-router-dom";
 
 const Products = () => {
