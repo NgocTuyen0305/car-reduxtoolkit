@@ -1,6 +1,6 @@
 import React from "react";
 import Slide from "../components/Slide";
-import Filter from "../components/Filter";
+import Filter from "../features/filter/pages/Filter";
 import ProductList from "../features/product/pages/ProductList";
 
 

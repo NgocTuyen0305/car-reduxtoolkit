@@ -19,6 +19,7 @@ import storage from "redux-persist/lib/storage";
 import productApi, { productReducer } from "../features/admin/productApi";
 import authApi, { authReducer } from "../features/auth/authApi";
 import { authSliceReducer } from "../features/auth/authSlice";
+import { filterReducer } from "../features/filter/filterSlice";
 
 const persistConfig = {
   key: "root",
@@ -28,7 +29,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   [productApi.reducerPath]: productReducer,
   [authApi.reducerPath]: authReducer,
-  Authentication: authSliceReducer
+  Authentication: authSliceReducer,
+  filterProduct:filterReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
