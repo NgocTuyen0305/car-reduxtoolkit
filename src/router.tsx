@@ -1,4 +1,8 @@
-import { createBrowserRouter, Outlet, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import ProductList from "./pages/ProductList";
 import ProductDetail from "./pages/ProductDetail";
@@ -11,6 +15,16 @@ import Products from "./features/admin/pages/Products";
 import EditProducts from "./features/admin/pages/EditProducts";
 import Dashboard from "./features/admin/pages/Dashboard";
 
+const authen = () => {
+  const persistedData = localStorage.getItem("persist:root");
+  if (persistedData) {
+    const { Authentication } = JSON.parse(persistedData);
+    const { token } = JSON.parse(Authentication);
+    return token;
+  }
+};
+
+// console.log(authen());
 
 export const router = createBrowserRouter([
   {
@@ -33,9 +47,9 @@ export const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-        <div className="">
-          <AdminLayout />
-        </div>
+      <div className="">
+        {authen() ? <AdminLayout /> : <Navigate to="/signin" />}
+      </div>
     ),
     children: [
       {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+
 import { useGetProductsQuery } from "../../admin/productApi";
 import { IProduct } from "../../../interfaces/products";
 import { Button, Result, Spin } from "antd";

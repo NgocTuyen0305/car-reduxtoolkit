@@ -24,7 +24,7 @@ import { filterReducer } from "../features/filter/filterSlice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["cart"],
+  whitelist: ["Authentication"],
 };
 const rootReducer = combineReducers({
   [productApi.reducerPath]: productReducer,

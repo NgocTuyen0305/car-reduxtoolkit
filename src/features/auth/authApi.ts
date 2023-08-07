@@ -6,7 +6,7 @@ const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:3000',
       prepareHeaders: (Headers) => {
-      const token = localStorage.getItem("accset_Token");
+      const token = localStorage.getItem("Authentication");
       Headers.set("authorization", `Bearer ${token}`);
       return Headers;
     },
