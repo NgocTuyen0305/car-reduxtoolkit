@@ -1,15 +1,16 @@
 import { useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSigninMutation } from "../authApi";
 import { Spin, notification } from "antd";
-import { useAppDispatch } from "../../../app/hooks";
-import { setToken, setUser } from "../authSlice";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { signSchema } from "../../../schemas/authSchema";
+import { login, setUser } from "../authSlice";
 const Signin = () => {
+  // const {isLoggeIn} = useAppSelector((state)=> state.Authentication)
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -41,13 +42,13 @@ const Signin = () => {
   if (error) errorSignin();
 
   const onHandleSubmit = async (data: any) => {
-    const reponse = await signin(data).unwrap();
+    const respones = await signin(data).unwrap();
     successSignin();
-    document.getElementById("registerForm")?.reset()
-    if(reponse.accsetToken){
-      dispatch(setToken(reponse.accsetToken));
-      dispatch(setUser(reponse.user));
-      // navigate(`/admin`)
+    document.getElementById("registerForm")?.reset();
+    if (respones) {
+      dispatch(login());
+      dispatch(setUser(respones.user))
+      navigate(`/admin`);
     }
   };
 

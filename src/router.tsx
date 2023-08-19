@@ -2,6 +2,7 @@ import {
   createBrowserRouter,
   Outlet,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import ProductList from "./pages/ProductList";
@@ -14,17 +15,9 @@ import AdminLayout from "./features/admin/pages/AdminLayout";
 import Products from "./features/admin/pages/Products";
 import EditProducts from "./features/admin/pages/EditProducts";
 import Dashboard from "./features/admin/pages/Dashboard";
+import PrivateRoute from "./components/PrivateRouter";
 
-const authen = () => {
-  const persistedData = localStorage.getItem("persist:root");
-  if (persistedData) {
-    const { Authentication } = JSON.parse(persistedData);
-    const { token } = JSON.parse(Authentication);
-    return token;
-  }
-};
 
-// console.log(authen());
 
 export const router = createBrowserRouter([
   {
@@ -46,31 +39,32 @@ export const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: (
-      <div className="">
-        {authen() ? <AdminLayout /> : <Navigate to="/signin" />}
-      </div>
-    ),
+    element: <PrivateRoute />,
     children: [
       {
-        index: true,
-        element: <Navigate to="product" />,
-      },
-      {
-        path: "product",
-        element: <Products />,
-      },
-      {
-        path: "product/:id/edit",
-        element: <EditProducts />,
-      },
-      {
-        path: "/admin/dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "product/:idProduct",
-        element: <div className="">Product Detail</div>,
+        element: <AdminLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="dashboard" />,
+          },
+          {
+            path: "product",
+            element: <Products />,
+          },
+          {
+            path: "product/:id/edit",
+            element: <EditProducts />,
+          },
+          {
+            path: "/admin/dashboard",
+            element: <Dashboard />,
+          },
+          {
+            path: "product/:idProduct",
+            element: <div className="">Product Detail</div>,
+          },
+        ],
       },
     ],
   },
