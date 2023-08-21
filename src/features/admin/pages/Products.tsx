@@ -4,8 +4,9 @@ import { Popconfirm, Result, Skeleton, Space, Table } from "antd";
 import { Button, Modal } from "antd";
 import AddProducts from "./AddProduct";
 import { useGetProductsQuery, useRemoveProductMutation } from "../productApi";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiFillDelete, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { FaEdit } from "react-icons/fa";
 
 const Products = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,14 +43,24 @@ const Products = () => {
       key: "price",
     },
     {
-      title: "Miles",
-      dataIndex: "miles",
-      key: "miles",
+      title: "Persons",
+      dataIndex: "persons",
+      key: "persons",
     },
     {
-      title: "Desc",
-      dataIndex: "desc",
-      key: "desc",
+      title: "Calendar",
+      dataIndex: "calendar",
+      key: "calendar",
+    },
+    {
+      title: "Petrol",
+      dataIndex: "petrol",
+      key: "petrol",
+    },
+    {
+      title: "Anchor",
+      dataIndex: "anchor",
+      key: "anchor",
     },
 
     {
@@ -68,25 +79,29 @@ const Products = () => {
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                "Delete"
+                <AiFillDelete className="text-xl"/>
               )}
             </Button>
           </Popconfirm>
           <Button type="link" className="ml-2">
-            <Link to={`/admin/product/${id}/edit`}>Edit</Link>
+            <Link to={`/admin/products/${id}/edit`}>
+            <FaEdit className="text-xl"/>
+            </Link>
           </Button>
         </Space>
       ),
     },
   ];
-  const dataSoucre = data?.map(({ id, name, miles, desc, images, price }) => {
+  const dataSoucre = data?.map(({ id, name, persons, calendar, images, price,petrol, anchor }) => {
     return {
       key: id,
       name,
-      miles,
-      desc,
+      persons,
+      calendar,
       images,
       price,
+      petrol,
+      anchor
     };
   });
   // console.log(dataSoucre);

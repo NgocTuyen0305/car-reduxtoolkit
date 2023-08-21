@@ -11,10 +11,13 @@ const Filter = () => {
     dispatch(setProduct(products));
   }, [dispatch, products]);
   const filterSubmit = (data: any) => {
-    const { name} = data;
+    const { name, calendar, petrol, price } = data;
     dispatch(
       filterProduct({
         name,
+        calendar,
+        petrol,
+        price,
       })
     );
   };
@@ -37,13 +40,13 @@ const Filter = () => {
             max={2023}
             placeholder="Year"
             className="mx-3 outline-1 outline-violet-500 p-1 border border-gray-300 rounded-md text-violet-500"
-            {...register("year")}
+            {...register("calendar")}
           />
           <input
             type="text"
-            placeholder="Model"
+            placeholder="Fuel"
             className="mx-3 outline-1 outline-violet-500 p-1 border border-gray-300 rounded-md text-violet-500"
-            {...register("model")}
+            {...register("petrol")}
           />
           <input
             type="text"

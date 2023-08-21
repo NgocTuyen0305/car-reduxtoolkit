@@ -23,10 +23,8 @@ const AdminLayout = () => {
 
   return (
     <Layout className="h-screen">
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
+      <Sider className="" collapsed={collapsed}>
         <Menu
-          theme="dark"
           mode="inline"
           defaultSelectedKeys={["1"]}
           items={[

@@ -91,12 +91,13 @@ app.get(`/products/:id`, async (req,res)=>{
   try {
     const data  = await fs.promises.readFile(dbFile,'utf-8');
     const db = JSON.parse(data);
-    const idProduct = parseInt(req.params.id)
-    const product = db.products.find((item)=> item.id ===idProduct)
+    const idProduct = req.params.id;
+    const product = db.products.find((item)=> item.id ==idProduct)
+    console.log(product);
     if(!product){
       return res.status(404).json({message: "Sản phẩm không tồn tại"})
     }
-    res.status(200).json(db.products)
+    res.status(200).json({message: "Lấy sản phẩm thành công",product})
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -117,17 +118,19 @@ app.post("/products", async (req, res) => {
 });
 // Sửa thông tin sản phẩm
 app.patch("/products/:id/edit", async (req, res) => {
-  const productId = parseInt(req.params.id);
+  const productId = req.params.id;
   const updatedProduct = req.body;
   try {
     const data = await fs.promises.readFile(dbFile, "utf-8");
     const db = JSON.parse(data);
-    const productIndex = db.products.findIndex((item) => item.id === productId);
+    const productIndex = db.products.findIndex((item) => item.id == productId);
+    // console.log(productIndex);
     if (productIndex === -1) {
       return res.status(404).json({ message: "Sản phẩm không tồn tại" });
     }
     db.products[productIndex] = { ...db.products[productIndex], ...updatedProduct };
     await fs.promises.writeFile(dbFile, JSON.stringify(db), "utf8");
+    console.log(db.products[productIndex]);
     res.status(200).json({ message: "Sửa thông tin sản phẩm thành công", product: db.products[productIndex] });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -135,11 +138,11 @@ app.patch("/products/:id/edit", async (req, res) => {
 });
 // Xóa sản phẩm
 app.delete("/products/:id", async (req, res) => {
-  const productId = parseInt(req.params.id);
+  const productId = req.params.id;
   try {
     const data = await fs.promises.readFile(dbFile, "utf-8");
     const db = JSON.parse(data);
-    const productIndex = db.products.findIndex((item) => item.id === productId);
+    const productIndex = db.products.findIndex((item) => item.id == productId);
     if (productIndex === -1) {
       return res.status(404).json({ message: "Sản phẩm không tồn tại" });
     }

@@ -1,32 +1,45 @@
 import React, { useEffect } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Select, Spin } from "antd";
 import { IProduct } from "../../../interfaces/products";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAddProductMutation, useGetProductByIdQuery } from "../productApi";
+import {
+  useGetProductByIdQuery,
+  useUpdateProductMutation,
+} from "../productApi";
+import { Option } from "antd/es/mentions";
 
 const EditProducts = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
-  // console.log(id);
-  const { data: productData, isLoading } = useGetProductByIdQuery(id);
-  // console.log(productData);
-
-  const [updateProduct, { isLoading: isUpdateLoading }] =
-    useAddProductMutation();
   const [form] = Form.useForm();
-  const newData = productData?.find((item: IProduct) => item.id == id);
+  const navigate = useNavigate();
+  const { data, isLoading, error } = useGetProductByIdQuery(id);
+  const [updateProduct, { isLoading: isUpdateLoading }] = useUpdateProductMutation();
+  const productById = data?.product;
+  console.log(productById);
+  
   useEffect(() => {
     form.setFieldsValue({
-      name: newData?.name,
-      price: newData?.price,
-      miles: newData?.miles,
-      images: newData?.images,
-      desc: newData?.desc,
+      name: productById?.name,
+      price: productById?.price,
+      images: productById?.images,
+      persons: productById?.persons,
+      calendar: productById?.calendar,
+      petrol: productById?.petrol,
+      anchor: productById?.anchor,
+      company: productById?.company,
     });
-  }, [newData]);
+  }, [productById]);
+
+  if (isUpdateLoading)
+    return (
+      <div className="flex justify-center items-center">
+        Loading...
+        <Spin />
+      </div>
+    );
+
   const onFinish = (values: any) => {
-    updateProduct(values)
-      // console.log(values);
+    updateProduct({ ...values, id })
       .unwrap()
       .then(() => {
         return navigate(`/admin/product`);
@@ -66,13 +79,6 @@ const EditProducts = () => {
           <Input />
         </Form.Item>
         <Form.Item<IProduct>
-          label="Miles"
-          name="miles"
-          rules={[{ required: true, message: "Vui lòng nhập trường miles!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item<IProduct>
           label="Images"
           name="images"
           rules={[{ required: true, message: "Vui lòng nhập trường images!" }]}
@@ -80,11 +86,46 @@ const EditProducts = () => {
           <Input />
         </Form.Item>
         <Form.Item<IProduct>
-          label="Description"
-          name="desc"
-          rules={[{ required: true, message: "Vui lòng nhập trường desc!" }]}
+          label="Persons"
+          name="persons"
+          rules={[{ required: true, message: "Vui lòng nhập trường persons!" }]}
         >
           <Input />
+        </Form.Item>
+
+        <Form.Item<IProduct>
+          label="Calendar"
+          name="calendar"
+          rules={[
+            { required: true, message: "Vui lòng nhập trường calendar!" },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item<IProduct>
+          label="Petrol"
+          name="petrol"
+          rules={[{ required: true, message: "Vui lòng nhập trường petrol!" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item<IProduct>
+          label="Anchor"
+          name="anchor"
+          rules={[{ required: true, message: "Vui lòng nhập trường anchor!" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item name="company" label="Company" rules={[{ required: true }]}>
+          <Select
+            placeholder="Vui lòng chọn hãng xe hơi"
+            allowClear
+          >
+            <Option value="toyota">toyota</Option>
+            <Option value="tesla">tesla</Option>
+            <Option value="wolkswagon">wolkswagon</Option>
+            <Option value="mercedes">mercedes</Option>
+          </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button className="bg-bule-500" htmlType="submit">

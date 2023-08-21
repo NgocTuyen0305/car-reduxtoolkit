@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { Modal } from "antd";
 const Header = () => {
   const { user } = useAppSelector((state) => state.Authentication);
   // console.log(user);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
       <div className="flex justify-between bg-violet-200 items-center py-4 px-6">
@@ -29,21 +43,42 @@ const Header = () => {
             </li>
           </ul>
         </div>
-        <div className="">
-          {user ? (
-            <div className="">
-              <span className="font-bold">Hello: </span>
-              <span className="font-bold text-violet-500">{user.username}</span>
-            </div>
-          ) : (
-            <Link to={`signup`}>
-              <button className="btn bg-violet-500 rounded-md p-1 text-white">
-                Sign Up
-              </button>
-            </Link>
-          )}
+        <div className="flex items-center gap-x-3">
+          <div
+            className="bg-violet-500 flex items-center rounded-md gap-x-2 px-2 cursor-pointer"
+            onClick={showModal}
+          >
+            <p className="text-white">Cart</p>
+            <ShoppingCartOutlined className="text-2xl text-white " />
+          </div>
+          <div className="">
+            {user ? (
+              <div className="">
+                <span className="font-bold">Hello: </span>
+                <span className="font-bold text-violet-500">
+                  {user?.username}
+                </span>
+              </div>
+            ) : (
+              <Link to={`signup`}>
+                <button className="btn bg-violet-500 rounded-md p-1 text-white">
+                  Sign Up
+                </button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     </>
   );
 };

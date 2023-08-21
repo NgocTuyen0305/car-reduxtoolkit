@@ -1,4 +1,10 @@
-
+import {
+  BsPersonFill,
+  BsFillCalendarEventFill,
+  BsFuelPumpDieselFill,
+  BsFillCartFill,
+} from "react-icons/bs";
+import { FaAnchor } from "react-icons/fa";
 import { useGetProductsQuery } from "../../admin/productApi";
 import { IProduct } from "../../../interfaces/products";
 import { Button, Result, Spin } from "antd";
@@ -24,40 +30,62 @@ const ProductList = () => {
       />
     );
   return (
-    <div className="max-w-6xl mx-auto my-20 grid grid-cols-3 gap-6">
-      {(filterProduct.length == 0 ? products : filterProduct)?.map((item: IProduct) => {
-        return (
-          <div
-            className=" hover:bg-violet-200 p-6 rounded-lg transition-all"
-            key={item.id}
-          >
-            <div className="h-[350px] flex flex-col justify-between gap-y-3 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300">
-              <div className="">
+    <div className="max-w-6xl mx-auto my-20">
+      <div className="text-center my-6">
+        <h3 className="text-slate-800 text-3xl font-bold">Car Catalogue</h3>
+        <p className="text-gray-500 text-xl my-4">Explore car that you might like!</p>
+      </div>
+      <div className=" grid grid-cols-3 gap-6">
+        {(filterProduct.length == 0 ? products : filterProduct)?.map(
+          (product) => {
+            return (
+              <div
+                className="flex flex-col justify-between h-[420px] p-2 hover:bg-violet-200 rounded-md"
+                key={product.id}
+              >
                 <div className="">
-                  <img src={`${item.images}`} alt="" className="rounded-md" />
+                  <div className="transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300">
+                    <img src={product.images} alt="" />
+                  </div>
+                  <div className="my-3">
+                    <p className="text-2xl font-bold">{product.name}</p>
+                  </div>
+                  <div className="">
+                    <div className="grid grid-cols-2 gap-y-5">
+                      <div className="flex gap-x-3 items-center">
+                        <BsPersonFill className="text-2xl text-gray-400" />
+                        <p className="text-gray-400 ">
+                          {product.persons} persons
+                        </p>
+                      </div>
+                      <div className="flex gap-x-3 items-center">
+                        <FaAnchor className="text-2xl text-gray-400" />
+                        <p className="text-gray-400 ">{product.anchor}</p>
+                      </div>
+                      <div className="flex gap-x-3 items-center">
+                        <BsFillCalendarEventFill className="text-2xl text-gray-400" />
+                        <p className="text-gray-400 ">{product.calendar}</p>
+                      </div>
+                      <div className="flex gap-x-3 items-center">
+                        <BsFuelPumpDieselFill className="text-2xl text-gray-400" />
+                        <p className="text-gray-400 ">{product.petrol}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="">
-                  <h2 className="font-bold text-xl">{item.name}</h2>
-                  <span className="text-gray-500">{item.miles} Miles</span>
+                <div className="flex justify-between items-center">
+                  <div className="font-bold text-lg">$ {product.price}</div>
+                  <div className="">
+                    <button className="px-4 py-1 bg-violet-500 text-white rounded-sm flex gap-x-2 items-center">
+                      Add to cart <BsFillCartFill />
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="">
-                <div className="">
-                  <h3 className="font-bold">{item.desc}</h3>
-                </div>
-                <div className="">
-                  <button className="bg-violet-300 text-violet-600 py-2 px-4 rounded-sm mr-2 font-bold">
-                    {item.price}
-                  </button>
-                  <button className="text-gray-600 bg-gray-300 hover:bg-violet-300 hover:text-violet-600 transition-all py-2 px-4 rounded-sm ml-2">
-                    Buy Now
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      })}
+            );
+          }
+        )}
+      </div>
     </div>
   );
 };
