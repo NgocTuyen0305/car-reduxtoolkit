@@ -3,10 +3,18 @@ import { useForm } from "react-hook-form";
 import { useGetProductsQuery } from "../../admin/productApi";
 import { useAppDispatch } from "../../../app/hooks";
 import { filterProduct, setProduct } from "../filterSlice";
+import AOS from "aos";
 const Filter = () => {
   const { data: products, isLoading, error } = useGetProductsQuery();
   const { register, handleSubmit } = useForm();
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      easing: "ease-in-out",
+      // ... các tùy chọn khác
+    });
+  }, []);
   useEffect(() => {
     dispatch(setProduct(products));
   }, [dispatch, products]);
@@ -23,11 +31,11 @@ const Filter = () => {
   };
   return (
     <>
-      <div className="flex flex-col items-center mt-12">
+      <div className="flex flex-col items-center mt-12" data-aos="fade-up">
         <div className="text-2xl font-bold my-4">
           Which vehicle you are looking for?
         </div>
-        <form className="my-4" onSubmit={handleSubmit(filterSubmit)}>
+        <form className="my-4" onSubmit={handleSubmit(filterSubmit)} >
           <input
             type="text"
             placeholder="Type"

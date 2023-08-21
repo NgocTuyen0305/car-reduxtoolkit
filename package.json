@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.1.1",
     "@reduxjs/toolkit": "^1.9.5",
     "antd": "^5.7.3",
+    "aos": "3.0.0-beta.6",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",

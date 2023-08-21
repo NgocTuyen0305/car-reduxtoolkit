@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import { ShoppingCartOutlined } from "@ant-design/icons";
@@ -6,7 +6,7 @@ import { Modal } from "antd";
 import CartProduct from "../features/cart/pages/CartProduct";
 const Header = () => {
   const { user } = useAppSelector((state) => state.Authentication);
-  const {items} = useAppSelector((state)=> state.cart)
+  const { items } = useAppSelector((state) => state.cart);
   // console.log(user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -23,7 +23,7 @@ const Header = () => {
   };
   return (
     <>
-      <div className="flex justify-between bg-violet-200 items-center py-4 px-6">
+      <div className={`flex justify-between bg-violet-200 items-center py-4 px-6 sticky top-0 left-0 right-0`}>
         <div className="">
           <Link to={`/`}>
             <i className="fas fa-car text-2xl text-violet-500"></i>
@@ -77,7 +77,7 @@ const Header = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <CartProduct/>
+        <CartProduct />
       </Modal>
     </>
   );
