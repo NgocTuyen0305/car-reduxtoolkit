@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
+import CartProduct from "../features/cart/pages/CartProduct";
 const Header = () => {
   const { user } = useAppSelector((state) => state.Authentication);
+  const {items} = useAppSelector((state)=> state.cart)
   // console.log(user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,8 +50,8 @@ const Header = () => {
             className="bg-violet-500 flex items-center rounded-md gap-x-2 px-2 cursor-pointer"
             onClick={showModal}
           >
-            <p className="text-white">Cart</p>
             <ShoppingCartOutlined className="text-2xl text-white " />
+            <div className="text-white">{items.length}</div>
           </div>
           <div className="">
             {user ? (
@@ -70,14 +72,12 @@ const Header = () => {
         </div>
       </div>
       <Modal
-        title="Basic Modal"
+        title="CAR CART"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <CartProduct/>
       </Modal>
     </>
   );

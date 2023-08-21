@@ -20,17 +20,19 @@ import productApi, { productReducer } from "../features/admin/productApi";
 import authApi, { authReducer } from "../features/auth/authApi";
 import { authSliceReducer } from "../features/auth/authSlice";
 import { filterReducer } from "../features/filter/filterSlice";
+import { cartReducer } from "../features/cart/cartSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["Authentication"],
+  whitelist: ["Authentication","cart"],
 };
 const rootReducer = combineReducers({
   [productApi.reducerPath]: productReducer,
   [authApi.reducerPath]: authReducer,
   Authentication: authSliceReducer,
   filterProduct:filterReducer,
+  cart: cartReducer
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
