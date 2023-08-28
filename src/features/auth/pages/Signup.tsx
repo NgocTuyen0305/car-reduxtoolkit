@@ -46,7 +46,7 @@ const Signup = () => {
     <>
       <div className="max-w-lg mx-auto my-12 flex flex-col gap-y-8 ">
         <div className="">
-          <h1 className="font-bold text-2xl">Sign In</h1>
+          <h1 className="font-bold text-2xl">Sign Up</h1>
         </div>
         <form
           action=""
@@ -59,11 +59,11 @@ const Signup = () => {
             <input
               type="text"
               className="border-2 rounded-sm outline-violet-500 py-1 pl-2 text-violet-500"
-              {...register("username")}
+              {...register("name")}
               placeholder="name..."
             />
-            {errors.username && (
-              <span className="text-red-500">{errors.username.message}</span>
+            {errors.name && (
+              <span className="text-red-500">{errors.name.message}</span>
             )}
           </div>
           <div className="flex flex-col gap-y-3 mt-6">

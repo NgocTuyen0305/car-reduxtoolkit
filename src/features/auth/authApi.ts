@@ -4,7 +4,7 @@ const authApi = createApi({
   reducerPath: 'auth',
   tagTypes: ['Auth'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'http://localhost:8080/api',
       prepareHeaders: (Headers) => {
       const token = localStorage.getItem("Authentication");
       Headers.set("authorization", `Bearer ${token}`);
@@ -18,7 +18,7 @@ const authApi = createApi({
   endpoints: (builder)=>({
     signin: builder.mutation({
       query: (signinUser) => ({
-        url: "auth/signin",
+        url: "/signin",
         method: "POST",
         body: signinUser,
       }),
@@ -26,7 +26,7 @@ const authApi = createApi({
     }),
     signup: builder.mutation({
       query: (signupUser) => ({
-        url: "auth/signup",
+        url: "/signup",
         method: "POST",
         body: signupUser,
       }),

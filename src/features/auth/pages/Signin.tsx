@@ -6,7 +6,7 @@ import { useSigninMutation } from "../authApi";
 import { Spin, notification } from "antd";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { signSchema } from "../../../schemas/authSchema";
-import { login, setUser } from "../authSlice";
+import { login, setToken, setUser } from "../authSlice";
 const Signin = () => {
   // const {isLoggeIn} = useAppSelector((state)=> state.Authentication)
   const dispatch = useAppDispatch();
@@ -33,13 +33,11 @@ const Signin = () => {
       description: "Bạn đã đăng nhập thành công tài khoản.",
     });
   };
-  const errorSignin = () => {
-    notification.error({
+  if (error)
+    return notification.error({
       message: "Đăng nhập thất bại",
       description: "Vui lòng đăng nhập lại.",
     });
-  };
-  if (error) errorSignin();
 
   const onHandleSubmit = async (data: any) => {
     const respones = await signin(data).unwrap();
@@ -47,7 +45,8 @@ const Signin = () => {
     document.getElementById("registerForm")?.reset();
     if (respones) {
       dispatch(login());
-      dispatch(setUser(respones.user))
+      dispatch(setUser(respones.user));
+      dispatch(setToken(respones.accessToken));
       // navigate(`/admin`);
     }
   };

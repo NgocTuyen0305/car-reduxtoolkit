@@ -10,7 +10,7 @@ export const signSchema = yup.object().shape({
     .min(6, "Password phải ít nhất 6 kí tự"),
 });
 export const singupSchema = yup.object().shape({
-  username: yup.string().required("Vui lòng nhập tên đăng nhập."),
+  name: yup.string().required("Vui lòng nhập tên đăng nhập."),
   email: yup
     .string()
     .required("Vui lòng nhập email.")
