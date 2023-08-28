@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import { LogoutOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
 import CartProduct from "../features/cart/pages/CartProduct";
+import { AiOutlineLogout } from "react-icons/ai";
 const Header = () => {
   const { user } = useAppSelector((state) => state.Authentication);
   const { items } = useAppSelector((state) => state.cart);
@@ -23,7 +24,9 @@ const Header = () => {
   };
   return (
     <>
-      <div className={`flex justify-between bg-violet-200 items-center py-4 px-6 sticky top-0 left-0 right-0`}>
+      <div
+        className={`flex justify-between bg-violet-200 items-center py-4 px-6 sticky top-0 left-0 right-0`}
+      >
         <div className="">
           <Link to={`/`}>
             <i className="fas fa-car text-2xl text-violet-500"></i>
@@ -57,9 +60,18 @@ const Header = () => {
             {user ? (
               <div className="">
                 <span className="font-bold">Hello: </span>
-                <span className="font-bold text-violet-500">
-                  {user?.username}
-                </span>
+                <select
+                  name=""
+                  id=""
+                  className="bg-transparent focus:outline-none"
+                >
+                  <option value="">{user?.username}</option>
+                  <option value="">
+                    <LogoutOutlined />
+                    <button>Logout</button>
+                  </option>
+                </select>
+                <span className="font-bold text-violet-500">{}</span>
               </div>
             ) : (
               <Link to={`signup`}>

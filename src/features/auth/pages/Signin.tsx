@@ -48,7 +48,7 @@ const Signin = () => {
     if (respones) {
       dispatch(login());
       dispatch(setUser(respones.user))
-      navigate(`/admin`);
+      // navigate(`/admin`);
     }
   };
 
