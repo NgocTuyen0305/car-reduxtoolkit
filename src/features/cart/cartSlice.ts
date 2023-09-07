@@ -6,7 +6,7 @@ const cartSlice = createSlice({
     addItemCart: (state, action) => {
       const productCart = action.payload;
       const exitProductIndex = state.items.findIndex(
-        (item) => item.id == productCart.id
+        (item) => item._id === productCart._id
       );
       if (exitProductIndex === -1) {
         state.items.push(productCart);
@@ -15,19 +15,19 @@ const cartSlice = createSlice({
       }
     },
     increase: (state, action) => {
-      state.items.find((item) => item.id === action.payload)
+      state.items.find((item) => item._id === action.payload)
         .quantily++;
     },
     decrease: (state, action) => {
       const productFound = state.items.find(
-        (item) => item.id == action.payload
+        (item) => item._id == action.payload
       );
       productFound.quantily--;
       if (productFound.quantily < 1) {
         const confirm = window.confirm("Bạn có muốn xóa khỏi giỏ hàng?");
         if (confirm)
           state.items = state.items.filter(
-            (item) => item.id !== action.payload
+            (item) => item._id !== action.payload
           );
         productFound.quantily = 1;
       }

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Form, Input, Select, Spin } from "antd";
+import { Button, Form, Input, Select, Spin, notification } from "antd";
 import { IProduct } from "../../../interfaces/products";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -7,16 +7,20 @@ import {
   useUpdateProductMutation,
 } from "../productApi";
 import { Option } from "antd/es/mentions";
+import { useGetCategoriesQuery } from "../../categories/categoriesApi";
 
 const EditProducts = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetProductByIdQuery(id);
-  const [updateProduct, { isLoading: isUpdateLoading }] = useUpdateProductMutation();
-  const productById = data?.product;
-  console.log(productById);
-  
+  const { data: productById, isLoading, error } = useGetProductByIdQuery(id);
+  const { data: category, isLoading: loadingCategory } =
+    useGetCategoriesQuery();
+  const [updateProduct, { isLoading: isUpdateLoading, error: errorUpdate }] =
+    useUpdateProductMutation();
+  // const productById = data?.product;
+  // console.log(productById);
+
   useEffect(() => {
     form.setFieldsValue({
       name: productById?.name,
@@ -26,7 +30,7 @@ const EditProducts = () => {
       calendar: productById?.calendar,
       petrol: productById?.petrol,
       anchor: productById?.anchor,
-      company: productById?.company,
+      categoryId: productById?.categoryId,
     });
   }, [productById]);
 
@@ -37,12 +41,22 @@ const EditProducts = () => {
         <Spin />
       </div>
     );
+    if (errorUpdate) {
+      notification.warning({
+        message: "Bạn không có quyền truy cập!",
+      });
+    }
 
   const onFinish = (values: any) => {
+    // console.log(values);
     updateProduct({ ...values, id })
       .unwrap()
       .then(() => {
-        return navigate(`/admin/product`);
+        return notification.success({
+          message: "Cập nhật thành công"
+        });
+      }).then(()=>{
+        navigate(`/admin/products`)
       });
   };
 
@@ -116,15 +130,19 @@ const EditProducts = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="company" label="Company" rules={[{ required: true }]}>
-          <Select
-            placeholder="Vui lòng chọn hãng xe hơi"
-            allowClear
-          >
-            <Option value="toyota">toyota</Option>
-            <Option value="tesla">tesla</Option>
-            <Option value="wolkswagon">wolkswagon</Option>
-            <Option value="mercedes">mercedes</Option>
+        <Form.Item
+          name="categoryId"
+          label="Category"
+          rules={[{ required: true }]}
+        >
+          <Select placeholder="Vui lòng chọn hãng xe hơi" allowClear>
+            {category?.map((item) => {
+              return (
+                <Option value={item.categoryId} key={item._id}>
+                  {item.name}
+                </Option>
+              );
+            })}
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

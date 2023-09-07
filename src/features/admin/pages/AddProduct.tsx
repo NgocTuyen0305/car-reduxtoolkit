@@ -1,15 +1,27 @@
 import React from "react";
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select, notification } from "antd";
 import { IProduct } from "../../../interfaces/products";
 import { useAddProductMutation } from "../productApi";
 import { Option } from "antd/es/mentions";
+import { useGetCategoriesQuery } from "../../categories/categoriesApi";
 const AddProducts = () => {
-  const [addProduct, { isLoading }] = useAddProductMutation();
-
+  const [addProduct, { isLoading, error }] = useAddProductMutation();
+  const { data: category, isLoading: loadingCategory } =
+    useGetCategoriesQuery();
+  if (error) {
+    notification.warning({
+      message: "Bạn không có quyền truy cập!",
+    });
+  }
   const onFinish = (values: any) => {
     // console.log(values);
     addProduct(values)
       .unwrap()
+      .then(() => {
+        return notification.success({
+          message: "Cập nhật thành công",
+        });
+      })
       .then(() => {
         return document.querySelector("#form-add")?.reset();
       });
@@ -82,15 +94,19 @@ const AddProducts = () => {
       >
         <Input />
       </Form.Item>
-      <Form.Item name="company" label="Company" rules={[{ required: true }]}>
-        <Select
-          placeholder="Vui lòng chọn hãng xe hơi"
-          allowClear
-        >
-          <Option value="toyota">toyota</Option>
-          <Option value="tesla">tesla</Option>
-          <Option value="wolkswagon">wolkswagon</Option>
-          <Option value="mercedes">mercedes</Option>
+      <Form.Item
+        name="categoryId"
+        label="CategoryId"
+        rules={[{ required: true }]}
+      >
+        <Select placeholder="Vui lòng chọn hãng xe hơi" allowClear>
+          {category?.map((item) => {
+            return (
+              <Option value={item.categoryId} key={item._id}>
+                {item.name}
+              </Option>
+            );
+          })}
         </Select>
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

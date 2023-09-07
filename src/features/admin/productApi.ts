@@ -6,13 +6,23 @@ const productApi = createApi({
   tagTypes: ["Product"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const Authentication = localStorage.getItem("persist:root");
+      const authenticationData = JSON.parse(Authentication);
+      const authData = JSON.parse(authenticationData.Authentication);
+      const { token } = authData;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+        return headers;
+      }
+    },
   }),
   endpoints: (builder) => ({
     getProducts: builder.query<IProduct, void>({
       query: () => `/products`,
       providesTags: ["Product"],
     }),
-    getProductById: builder.query<IProduct, number|string>({
+    getProductById: builder.query<IProduct, number | string>({
       query: (id) => `/products/${id}`,
       providesTags: ["Product"],
     }),
@@ -27,7 +37,7 @@ const productApi = createApi({
     updateProduct: builder.mutation<IProduct, IProduct>({
       query: (product) => ({
         url: `/products/${product.id}`,
-        method: "PATCH",
+        method: "PUT",
         body: product,
       }),
       invalidatesTags: ["Product"],

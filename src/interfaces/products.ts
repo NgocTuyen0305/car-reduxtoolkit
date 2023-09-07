@@ -1,5 +1,5 @@
 export interface IProduct{
-  id?: number|string,
+  _id?: number|string,
   name:string,
   price: string,
   calendar: number,
@@ -7,5 +7,5 @@ export interface IProduct{
   images: string,
   anchor: string,
   petrol: string,
-  company: string,
+  categoryId: string | number,
 }

@@ -16,6 +16,7 @@ import Products from "./features/admin/pages/Products";
 import EditProducts from "./features/admin/pages/EditProducts";
 import Dashboard from "./features/admin/pages/Dashboard";
 import PrivateRoute from "./components/PrivateRouter";
+import Categories from "./features/categories/pages/Categories";
 
 
 
@@ -49,11 +50,11 @@ export const router = createBrowserRouter([
             element: <Navigate to="dashboard" />,
           },
           {
-            path: "product",
+            path: "products",
             element: <Products />,
           },
           {
-            path: "products/:id/edit",
+            path: "products/:id",
             element: <EditProducts />,
           },
           {
@@ -63,6 +64,14 @@ export const router = createBrowserRouter([
           {
             path: "product/:idProduct",
             element: <div className="">Product Detail</div>,
+          },
+          {
+            path: "categories",
+            element: <Categories />,
+          },
+          {
+            path: "categories/:id",
+            element: <EditProducts />,
           },
         ],
       },

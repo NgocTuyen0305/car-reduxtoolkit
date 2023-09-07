@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Popconfirm, Result, Skeleton, Space, Table } from "antd";
+import { Popconfirm, Result, Skeleton, Space, Table, notification } from "antd";
 
 import { Button, Modal } from "antd";
 import AddProducts from "./AddProduct";
@@ -7,14 +7,23 @@ import { useGetProductsQuery, useRemoveProductMutation } from "../productApi";
 import { AiFillDelete, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
+import { IProduct } from "../../../interfaces/products";
 
 const Products = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data, error, isLoading } = useGetProductsQuery();
-  const [removeProduct, { isLoading: isRemoveLoading }] =
+  const [removeProduct, { isLoading: isRemoveLoading, error: errorRemove }] =
     useRemoveProductMutation();
-  // console.log(error);
-
+  // console.log(data);
+  if (!data)
+    return (
+      <Result
+        status="404"
+        title="404"
+        subTitle="Sorry, the page you visited does not exist."
+        extra={<Button type="primary">Back Home</Button>}
+      />
+    );
   if (isLoading) return <Skeleton />;
   if (error)
     return (
@@ -25,7 +34,11 @@ const Products = () => {
         extra={<Button type="primary">Back Home</Button>}
       />
     );
-
+  if(errorRemove){
+    notification.warning({
+        message: "Bạn không có quyền truy cập!"
+      })
+  }
   const columns = [
     {
       title: "Name",
@@ -79,31 +92,33 @@ const Products = () => {
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                <AiFillDelete className="text-xl"/>
+                <AiFillDelete className="text-xl" />
               )}
             </Button>
           </Popconfirm>
           <Button type="link" className="ml-2">
-            <Link to={`/admin/products/${id}/edit`}>
-            <FaEdit className="text-xl"/>
+            <Link to={`/admin/products/${id}`}>
+              <FaEdit className="text-xl" />
             </Link>
           </Button>
         </Space>
       ),
     },
   ];
-  const dataSoucre = data?.map(({ id, name, persons, calendar, images, price,petrol, anchor }) => {
-    return {
-      key: id,
-      name,
-      persons,
-      calendar,
-      images,
-      price,
-      petrol,
-      anchor
-    };
-  });
+  const dataSoucre = data?.map(
+    ({ _id, name, persons, calendar, images, price, petrol, anchor }) => {
+      return {
+        key: _id,
+        name,
+        persons,
+        calendar,
+        images,
+        price,
+        petrol,
+        anchor,
+      };
+    }
+  );
   // console.log(dataSoucre);
   //addPRODUCT
 

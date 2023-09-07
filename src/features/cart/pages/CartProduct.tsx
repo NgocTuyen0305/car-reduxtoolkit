@@ -24,7 +24,7 @@ const CartProduct = () => {
       <div className="">
         {items?.map((item) => {
           return (
-            <div className="flex justify-between bg-gray-100 rounded-md items-center p-2 my-2" key={item.id}>
+            <div className="flex justify-between bg-gray-100 rounded-md items-center p-2 my-2" key={item._id}>
               <div className="">
                 <img src={item.images} alt="" className="w-24" />
               </div>
@@ -54,11 +54,11 @@ const CartProduct = () => {
               </div>
               <div className="flex flex-col gap-y-3">
                 <div className="flex justify-between">
-                  <button onClick={()=> dispatch(increase(item.id))}>
+                  <button onClick={()=> dispatch(increase(item._id))}>
                     <BsArrowUpSquareFill className="text-2xl text-blue-500" />
                   </button>
                   <p>{item.quantily}</p>
-                  <button onClick={()=> dispatch(decrease(item.id))}>
+                  <button onClick={()=> dispatch(decrease(item._id))}>
                     <BsFillArrowDownSquareFill className="text-2xl text-red-500" />
                   </button>
                 </div>

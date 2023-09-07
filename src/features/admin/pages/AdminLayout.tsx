@@ -5,18 +5,21 @@ import {
   MenuUnfoldOutlined,
   LogoutOutlined,
   DatabaseOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Button, theme, Spin } from "antd";
+import { Layout, Menu, Button, theme, Spin, Avatar, Space } from "antd";
 import { Link, Navigate, Outlet } from "react-router-dom";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { logout, setUser } from "../../auth/authSlice";
-
+import { BiGridAlt } from "@react-icons/all-files/bi/BiGridAlt";
+import MyBreadcrumb from "../../../components/Breadcrumb";
 const { Header, Sider, Content } = Layout;
 
 const AdminLayout = () => {
   const dispatch = useAppDispatch();
   const [collapsed, setCollapsed] = useState(false);
-  const [isloading, setIsLoading] = useState(false);
+  // const [isloading, setIsLoading] = useState(false);
+  const { user } = useAppSelector((state) => state.Authentication);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -25,6 +28,8 @@ const AdminLayout = () => {
     <Layout className="h-screen">
       <Sider className="" collapsed={collapsed}>
         <Menu
+          className="mt-12"
+          theme="dark"
           mode="inline"
           defaultSelectedKeys={["1"]}
           items={[
@@ -36,10 +41,17 @@ const AdminLayout = () => {
             {
               key: "2",
               icon: <DatabaseOutlined />,
-              label: <Link to={`/admin/product`}>Products Management</Link>,
+              label: <Link to={`/admin/products`}>Products Management</Link>,
             },
             {
               key: "3",
+              icon: <BiGridAlt />,
+              label: (
+                <Link to={`/admin/categories`}>Categories Management</Link>
+              ),
+            },
+            {
+              key: "4",
               icon: <LogoutOutlined />,
               label: (
                 <Button
@@ -57,7 +69,10 @@ const AdminLayout = () => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+        <Header
+          style={{ padding: 0, background: colorBgContainer }}
+          className="flex justify-between items-center"
+        >
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -68,6 +83,10 @@ const AdminLayout = () => {
               height: 64,
             }}
           />
+          <Space className="mr-6">
+            <Avatar icon={<UserOutlined />} />
+            {user?.name}
+          </Space>
         </Header>
         <Content
           style={{
@@ -77,6 +96,7 @@ const AdminLayout = () => {
             background: colorBgContainer,
           }}
         >
+          <MyBreadcrumb />
           <Outlet />
         </Content>
       </Layout>
